@@ -1,0 +1,72 @@
+{
+  "exercise_id": "bodyweight_squat",
+  "display_name": "Bodyweight Squat",
+  "category": "compound_lower",
+  "primary_muscles": [
+    "quadriceps",
+    "gluteus_maximus"
+  ],
+  "secondary_muscles": [
+    "hamstrings",
+    "gastrocnemius",
+    "core"
+  ],
+  "met_value": 5.0,
+  "met_source": "Compendium of Physical Activities 2011 \u2014 Ainsworth et al., Med Sci Sports Exerc",
+  "phase_count": 3,
+  "landmarks_used": {
+    "hip": [
+      23,
+      24
+    ],
+    "knee": [
+      25,
+      26
+    ],
+    "ankle": [
+      27,
+      28
+    ]
+  },
+  "joint_angles": {
+    "knee_flexion": {
+      "description": "Angle at knee (hip-knee-ankle)",
+      "standing_threshold": 160,
+      "parallel_threshold": 100,
+      "bottom_threshold": 70,
+      "hysteresis": 8.0
+    }
+  },
+  "rep_logic": {
+    "state_machine": "ThreePhase",
+    "descent_condition": "knee_angle < 140",
+    "bottom_condition": "knee_angle < 80",
+    "ascent_condition": "knee_angle > 155",
+    "minimum_depth": "parallel (knee_angle < 100)"
+  },
+  "form_feedback_rules": [
+    {
+      "rule_id": "knee_cave",
+      "trigger": "knee_hip_width_ratio < 0.85",
+      "severity": "warning",
+      "message": "Push knees out over toes"
+    },
+    {
+      "rule_id": "forward_lean",
+      "trigger": "torso_vertical_angle > 45",
+      "severity": "caution",
+      "message": "Keep chest up"
+    },
+    {
+      "rule_id": "depth_insufficient",
+      "trigger": "knee_angle_at_bottom > 100",
+      "severity": "info",
+      "message": "Squat deeper for full rep"
+    }
+  ],
+  "edge_cases": [
+    "Insufficient depth (> 100 degree knee angle at bottom): rep not counted, depth warning shown",
+    "Asymmetric descent: left/right knee angle difference > 12 degrees triggers alignment warning",
+    "Camera frontal vs lateral: frontal plane used for knee cave detection; lateral for depth"
+  ]
+}
