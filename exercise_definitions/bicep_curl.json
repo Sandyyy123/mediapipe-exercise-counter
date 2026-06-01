@@ -1,0 +1,87 @@
+{
+  "exercise_id": "bicep_curl_bilateral",
+  "display_name": "Bicep Curl (Bilateral)",
+  "category": "strength",
+  "primary_muscles": [
+    "biceps_brachii"
+  ],
+  "secondary_muscles": [
+    "brachialis",
+    "brachioradialis"
+  ],
+  "met_value": 3.5,
+  "met_source": "Compendium of Physical Activities 2011 \u2014 Ainsworth et al., Med Sci Sports Exerc",
+  "phase_count": 2,
+  "landmarks_used": {
+    "shoulder": [
+      11,
+      12
+    ],
+    "elbow": [
+      13,
+      14
+    ],
+    "wrist": [
+      15,
+      16
+    ]
+  },
+  "joint_angles": {
+    "elbow_flexion": {
+      "description": "Angle at elbow (shoulder-elbow-wrist)",
+      "phase_1_start": 160,
+      "phase_1_label": "EXTENDED",
+      "phase_2_start": 40,
+      "phase_2_label": "CONTRACTED",
+      "hysteresis": 8.0
+    }
+  },
+  "rep_logic": {
+    "state_machine": "TwoPhase",
+    "entry_condition": "elbow_angle < 45",
+    "exit_condition": "elbow_angle > 155",
+    "minimum_rom": 90
+  },
+  "form_feedback_rules": [
+    {
+      "rule_id": "elbow_drift",
+      "trigger": "hip_elbow_horizontal_distance > 0.12",
+      "severity": "warning",
+      "message": "Keep elbows pinned to sides",
+      "landmark_pair": [
+        14,
+        24
+      ]
+    },
+    {
+      "rule_id": "wrist_deviation",
+      "trigger": "wrist_neutral_angle > 20",
+      "severity": "caution",
+      "message": "Keep wrists straight"
+    },
+    {
+      "rule_id": "shoulder_shrug",
+      "trigger": "shoulder_elevation_delta > 0.05",
+      "severity": "warning",
+      "message": "Relax shoulders during curl"
+    }
+  ],
+  "edge_cases": [
+    "Partial rep (< 90 degree ROM) not counted \u2014 state machine resets",
+    "Asymmetric curl: track left/right elbows independently; flag >15 degree discrepancy",
+    "Camera angle < 30 degrees off lateral: visibility_score < 0.6 triggers 'adjust camera' warning",
+    "Fast momentum curl: velocity > 2.5 rad/s triggers form warning"
+  ],
+  "camera_requirements": {
+    "preferred_angle": "lateral_45_degrees",
+    "minimum_visibility": 0.6,
+    "landmarks_required": [
+      11,
+      12,
+      13,
+      14,
+      15,
+      16
+    ]
+  }
+}
